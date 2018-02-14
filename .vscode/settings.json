@@ -1,3 +1,4 @@
 {
-    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\bash.exe",
+    //"terminal.integrated.shell.windows": "C:\\Windows\\System32\\ps.exe",
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
 }
