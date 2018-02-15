@@ -1,4 +1,5 @@
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
 import uuid from 'uuid';
 // ====================================================
 // ACTIONS
@@ -32,16 +33,29 @@ const editExpense = (id, updates) => ({
     id,
     updates
 });
-
 // SET_TEXT_FILTER
 const setTextFilter = (text = '') => ({
     type: 'SET_TEXT_FILTER',
     text
 })
 // SORT_BY_DATE
+const sortByDate = () => ({
+    type: 'SORT_BY_DATE'
+})
 // SORT_BY_AMOUNT
+const sortByAmount = () => ({
+    type: 'SORT_BY_AMOUNT'
+});
 // SET_START_DATE
+const setStateDate = (startDate) => ({
+    type: 'SET_START_DATE',
+    startDate
+});
 // SET_END_DATE
+const setEndDate = (endDate) => ({
+    type: 'SET_END_DATE',
+    endDate
+});
 
 // EXPENSES Reducer
 const expensesReducerDefaultState = [];
@@ -83,6 +97,26 @@ const filtersReducer = (state = filterReducerDefaultState, action) => {
                 ...state,
                 text: action.text
             }
+        case 'SORT_BY_AMOUNT':
+            return {
+                ...state,
+                sortBy: 'amount'
+            }
+        case 'SORT_BY_DATE':
+            return {
+                ...state,
+                sortBy: 'date'
+            }
+        case 'SET_START_DATE':
+            return {
+                ...state,
+                startDate: action.startDate
+            }
+        case 'SET_END_DATE':
+            return {
+                ...state,
+                endDate: action.endDate
+            }
         default:
             return state;
     }
@@ -92,12 +126,21 @@ const filtersReducer = (state = filterReducerDefaultState, action) => {
 const removeReducer = (state, action) => {
     state.expense.filter(expense => expense.id !== action.id);
 }
+
+// GET VISIBLE EXPENSES
+const getVisibleExpenses = (expenses, filter) => {
+
+}
+
+
+
 // STORE Creation
 const store = createStore(
     combineReducers({
         expenses: expensesReducer,
         filters: filtersReducer
-    })
+    }),
+    applyMiddleware(logger)
 );
 
 store.subscribe(() => {
@@ -111,6 +154,14 @@ store.dispatch(editExpense(expenseTwo.expense.id, {amount: 9}));
 
 store.dispatch(setTextFilter('rent'));
 store.dispatch(setTextFilter());
+
+store.dispatch(sortByAmount());
+store.dispatch(sortByDate());
+
+store.dispatch(setStateDate(125));
+store.dispatch(setStateDate());
+store.dispatch(setEndDate(1250));
+store.dispatch(setEndDate());
 
 const demoState = {
     expenses: [{
