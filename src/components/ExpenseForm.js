@@ -60,6 +60,7 @@ class ExpenseForm extends Component {
                         onFocusChange={this.onFocusChange}
                         numberOfMonths={1}
                         isOutsideRange={(day) => false}
+                        displayFormat={() => "MMM Do, YYYY"}
                     />
                     <textarea 
                         value={this.state.note}
